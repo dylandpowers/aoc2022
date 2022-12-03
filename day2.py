@@ -1,39 +1,24 @@
-OUTCOMES = {
-    ('A', 'X'): 3,
-    ('A', 'Y'): 6,
-    ('A', 'Z'): 0,
-    ('B', 'X'): 0,
-    ('B', 'Y'): 3,
-    ('B', 'Z'): 6,
-    ('C', 'X'): 6,
-    ('C', 'Y'): 0,
-    ('C', 'Z'): 3
+MOVES = {
+    'A': 'R',
+    'X': 'R',
+    'B': 'P',
+    'Y': 'P',
+    'C': 'S',
+    'Z': 'S'
 }
+
 
 POINTS = {
-    'X': 1,
-    'Y': 2,
-    'Z': 3
+    'R': 1,
+    'P': 2,
+    'S': 3
 }
 
 
-MATCH_POINTS = {
-    'X': 0,
-    'Y': 3,
-    'Z': 6
-}
-
-
-POINTS_FOR_MOVE = {
-    ('A', 'X'): 3,
-    ('A', 'Y'): 1,
-    ('A', 'Z'): 2,
-    ('B', 'X'): 1,
-    ('B', 'Y'): 2,
-    ('B', 'Z'): 3,
-    ('C', 'X'): 2,
-    ('C', 'Y'): 3,
-    ('C', 'Z'): 1
+OUTCOMES = {
+    'R': 'S',
+    'P': 'R',
+    'S': 'P'
 }
 
 
@@ -44,9 +29,20 @@ def part1():
     C, Z: scissors (3 points)
     """
     with open('inputs/day2.txt') as f:
-        moves = [tuple(s.strip().split(" ")) for s in f.readlines()]
+        total = 0
+        for line in f.readlines():
+            their_move_raw, our_move_raw = line.strip().split()
+            their_move = MOVES[their_move_raw]
+            our_move = MOVES[our_move_raw]
 
-    print(sum([OUTCOMES[play] + POINTS[play[1]] for play in moves]))
+            if our_move == their_move:
+                total += 3 + POINTS[our_move]
+            elif OUTCOMES[their_move] == our_move:
+                total += POINTS[our_move]
+            else:
+                total += 6 + POINTS[our_move]
+
+        print(total)
 
 
 def part2():
@@ -56,11 +52,22 @@ def part2():
     Z: win
     """
     with open('inputs/day2.txt') as f:
-        moves = [tuple(s.strip().split(" ")) for s in f.readlines()]
+        total = 0
+        outcomes_reversed = { v: k for k, v in OUTCOMES.items() }
+        for line in f.readlines():
+            their_move_raw, desired_outcome = line.strip().split()
+            their_move = MOVES[their_move_raw]
 
-    print(sum([POINTS_FOR_MOVE[play] + MATCH_POINTS[play[1]] for play in moves]))
+            if desired_outcome == 'X':
+                total += POINTS[OUTCOMES[their_move]]
+            elif desired_outcome == 'Y':
+                total += 3 + POINTS[their_move]
+            else:
+                total += 6 + POINTS[outcomes_reversed[their_move]]
+
+        print(total)
 
 
 if __name__ == "__main__":
-    #part1()
+    # part1()
     part2()
