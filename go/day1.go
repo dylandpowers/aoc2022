@@ -14,7 +14,7 @@ func Day1() {
 	total, max := 0, 0
 	for _, cals := range lines {
 		if cals == "" {
-			max = utils.Max(max, total)
+			max = utils.MaxInts(max, total)
 			calsPerElf = append(calsPerElf, total)
 			total = 0
 			continue
