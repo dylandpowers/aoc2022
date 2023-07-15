@@ -46,12 +46,9 @@ func Day5() {
 			fromStackIdx := int(line[strings.Index(line, "from") + 5] - '0') - 1
 			toStackIdx := int(line[strings.Index(line, "from") + 10] - '0') - 1
 
-			for i := 0; i < numToMove; i++ {
-				top := stacks[fromStackIdx][len(stacks[fromStackIdx]) - 1]
-				stacks[fromStackIdx] = stacks[fromStackIdx][:len(stacks[fromStackIdx]) - 1]
-				// fmt.Println("To before: ", stacks[toStackIdx])
-				stacks[toStackIdx] = append(stacks[toStackIdx], top)
-			}
+			topElems := stacks[fromStackIdx][len(stacks[fromStackIdx]) - numToMove:]
+			stacks[fromStackIdx] = stacks[fromStackIdx][:len(stacks[fromStackIdx]) - numToMove]
+			stacks[toStackIdx] = append(stacks[toStackIdx], topElems...)
 		}
 	}
 
