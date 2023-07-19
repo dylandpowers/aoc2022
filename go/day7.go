@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"goaoc22/utils"
+	"math"
 	"strconv"
 	"strings"
 )
@@ -73,7 +74,7 @@ func calculateSize(dir *Directory, sizes *[]int) int {
 		size += calculateSize(d, sizes)
 	}
 
-	if dir.isDir() && size < 100_000 {
+	if dir.isDir() {
 		*sizes = append(*sizes, size)
 	}
 	return size
@@ -81,12 +82,16 @@ func calculateSize(dir *Directory, sizes *[]int) int {
 
 func Day7() {
 	sizes := []int{}
-	calculateSize(getDirs(), &sizes)
-	fmt.Println(sizes)
-	total := 0
+	totalSize := calculateSize(getDirs(), &sizes)
+	unusedSpace := 70_000_000 - totalSize
+	spaceToFree := 30_000_000 - unusedSpace
+
+	closest := math.MaxUint32
 	for _, size := range sizes {
-		total += size
+		if size >= spaceToFree && utils.AbsInt(spaceToFree - size) < utils.AbsInt(spaceToFree - closest) {
+			closest = size
+		}
 	}
 
-	fmt.Println(total)
+	fmt.Println(closest)
 }
