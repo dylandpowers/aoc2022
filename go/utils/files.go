@@ -2,6 +2,7 @@ package utils
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 )
@@ -25,4 +26,8 @@ func GetLines(path string) []string {
 	}
 
 	return elems
+}
+
+func GetLinesForDay(dayNumber int) []string {
+	return GetLines(fmt.Sprintf("../inputs/day%d.txt", dayNumber))
 }
